@@ -1,0 +1,24 @@
+* {
+    box-sizing: border-box;
+}
+
+form {
+    padding: 20px;
+}
+
+#gif-display {
+    display: table-row;
+    margin: auto;
+}
+
+img {
+    display: table-row-group;
+}
+
+h1 {
+    text-align: center;
+}
+
+form {
+    text-align: center;
+}
