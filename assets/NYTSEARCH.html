@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+
+<body>
+
+    <div class="jumbotron jumbotron-fluid">
+        <div class="container">
+            <h1 class="display-4">New York Times Search</h1>
+        </div>
+    </div>
+    <div class="container">
+        <form>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Search Term:</label>
+                <input type="email" class="form-control" id="search-term" placeholder="name@example.com">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlSelect1">Number of Records to Retrieve:</label>
+                <select class="form-control" id="limit">
+                    <option>1</option>
+                    <option>5</option>
+                    <option>10</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Start Year (optional):</label>
+                <input class="form-control" id="start-year">
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">End Year :</label>
+                <input class="form-control" id="end-year">
+            </div>
+            <button type="button" class="btn btn-secondary" id="search">Search</button>
+            <button type="button" class="btn btn-secondary" id="clear">Clear Results</button>
+            </form>
+        <br>
+        <div class="card form-group">
+            <div class="card-header">
+                Top Articles
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item"></li>
+            </ul>
+        </div>
+    </div>
+    
+    
+    
+    
+    </div>
+
+
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script>
+        var searchTerm = "";
+        var numRecords = 10;
+        var startYear = "";
+        var endYear = "";
+
+        // clicking search fills those in
+        //          also runs makeRequest()
+        $('#search').on('click', function(){
+            console.log(searchTerm, numRecords, startYear, endYear)
+            searchTerm = $('#search-term').val()
+            numRecords = parseInt( $('#limit').val() );
+            startYear = $('#start-year').val()
+            endYear = $('#end-year').val()
+
+            makeRequest()
+        })
+
+        $('#clear').on('click', function(){
+            $('.list-group').empty();
+        })
+
+
+        function makeRequest() {
+            var apiKey = 'lT0pCl6e6gbU469C5M2GDx3hoJvNgQPG';
+            var url = "https://api.nytimes.com/svc/search/v2/articlesearch.json?";
+            url += 'api-key=' + apiKey;
+            url += '&q=' + searchTerm;
+            if(startYear.lenth > 0){
+                url += '&begin_date=' + startYear +'0101'
+            }
+            if (endYear.lenth > 0) {
+                url += '&end_date=' + endYear + '1231'
+            }
+
+            console.log(url)
+            $.ajax({
+                url,
+                method: "GET"
+            }).then(function (response) {
+                console.log(response)
+
+                for (var i = 0; i < numRecords; i++) {
+                    //console.log(response.response.docs[i])
+                    var headline = response.response.docs[i].headline.main;
+                    var byline = response.response.docs[i].byline.original;
+                    if (response.response.docs[i].byline && response.response.docs[i].byline.original){
+                        byline = response.response.docs[i].byline.original
+                    }
+                    console.log(headline, byline)
+
+                    var li = $('<li>', {class: 'list-group-item'}).append(
+                        $('<a>', { href: response.response.docs[i].web_url }).text(headline),
+                        $('<p>').text(byline)
+                    )
+                    $('.list-group').append(li)
+                }
+            })
+        }
+    </script>
+</body>
+
+</html>

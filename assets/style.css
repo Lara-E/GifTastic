@@ -46,6 +46,11 @@ form {
 
 .table {
     display: table-cell;
+
+}
+
+.table:nth-child(3):after {
+    content: "\A";
 }
 
 

@@ -45,15 +45,15 @@ $("document").ready(function () {
                 var results = response.data;
 
                 for (var i = 0; i < results.length; i++) {
-                    var gifDiv = $("<div class='table'>");
+                    var gifDiv = $("<div class='flex-wrap d-inline-flex' >");
                     var rating = results[i].rating;
                     var p = $("<p>").text("Rating: " + rating.toUpperCase());
                     var holidayImageStill = results[i].images.fixed_height_still.url;
                     var holidayImageAnimate = results[i].images.fixed_height.url;
                     var imageDisplay = $("<img>");
                     imageDisplay.addClass("image").attr({ "src": holidayImageStill, "data-url": holidayImageAnimate });
-                    gifDiv.append(imageDisplay, p);
-
+                    gifDiv.append(p);
+                    p.append(imageDisplay)
                     $("#gif-display").prepend(gifDiv);
                 }
 
@@ -64,24 +64,10 @@ $("document").ready(function () {
                     $(this).attr({ "src": animate, "data-url": still })
 
                 })
-
-                // $("#add-holiday").on("click", function (event) {
-                //     event.preventDefault();
-                //     var holidayInput = $("#holiday-input").val().trim();
-                //     holidays.push(holidayInput);
-                //     createButtons();
-                // });
                 
 
             })
         })
-    // }
 
-    // $("#add-holiday").on("click", function (event) {
-    //     event.preventDefault();
-    //     var holidayInput = $("#holiday-input").val().trim();
-    //     holidays.push(holidayInput);
-    //     createButtons();
-    // });
 })
 
